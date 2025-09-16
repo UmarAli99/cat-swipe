@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   constructor(private catService: CatService) {}
 
   ngOnInit() {
-    this.loadCats(8);
+    this.loadCats(20);
   }
 
   loadCats(count: number) {
