@@ -1,0 +1,49 @@
+<div class="app-shell">
+  <header class="app-header">
+    <h1>{{ title }}</h1>
+  </header>
+
+  <main class="card-area" *ngIf="!isSummary">
+    <div class="cards-wrapper">
+      <ng-container *ngFor="let card of cards; let i = index">
+        <div *ngIf="i === currentIndex" class="card"
+            [style.transform]="getCardStyle(i)['transform']"
+            [style.zIndex]="getCardStyle(i)['z-index']"
+            [style.opacity]="getCardStyle(i)['opacity'] || 1"
+            (pointerdown)="onPointerDown($event, i)"
+            (pointermove)="onPointerMove($event, i)"
+            (pointerup)="onPointerUp($event, i)"
+            (pointercancel)="onPointerUp($event, i)">
+
+          <img [src]="card.url" [alt]="'Cat ' + card.id" draggable="false"/>
+
+          <div class="badge like" *ngIf="i === currentIndex && translateX > 20">LIKE</div>
+          <div class="badge nope" *ngIf="i === currentIndex && translateX < -20">NOPE</div>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <div class="controls">
+      <button (click)="swipeLeft()" class="btn dislike">Dislike</button>
+      <button (click)="swipeRight()" class="btn like">Like</button>
+    </div>
+  </main>
+
+  <section class="summary" *ngIf="isSummary">
+    <h2>Summary</h2>
+    <p>You liked {{ liked.length }} / {{ cards.length }} cats.</p>
+    <div class="liked-list">
+      <div class="liked-item" *ngFor="let c of liked">
+        <img [src]="c.url" [alt]="'Liked ' + c.id"/>
+      </div>
+    </div>
+    <div class="summary-actions">
+      <button (click)="loadCats(cards.length)" class="btn">Try Again</button>
+    </div>
+  </section>
+
+  <footer class="app-footer">
+    <small>Images by Cataas — https://cataas.com/</small>
+  </footer>
+</div>
